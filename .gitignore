@@ -1,0 +1,4 @@
+node_modules/
+
+device/certs/*
+!device/certs/root-CA.crt
