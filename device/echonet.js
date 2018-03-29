@@ -4,16 +4,20 @@ const dgram = require('dgram');
 const log4js = require('log4js');
 
 const logger = log4js.getLogger();
-logger.level = 'debug';
 
-const address = '192.168.1.4';
+const address = process.env.AC_ADDRESS;
+if (!address) {
+  logger.fatal('set environment value AC_ADDRESS');
+  process.exit(1);
+}
+logger.info('target: ' + address);
 
 /*
  * Constatants defined by ECHONET Lite.
  * https://echonet.jp/spec_g/#standard-01
  */
 
- const port = 3610;
+const port = 3610;
 
 const ehd = [ 0x10, 0x81 ];
 const tid = [ 0x00, 0x00 ];
@@ -35,7 +39,7 @@ const operationStatusOff = 0x31;
  * @param {setOperationStatusCallback} callback 
  */
 exports.setOperationStatus = (status, callback) => {
-  logger.debug('set: ' + status);
+  logger.info('set: ' + status);
 
   const socket = dgram.createSocket('udp4');
 

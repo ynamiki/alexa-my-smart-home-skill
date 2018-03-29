@@ -3,10 +3,11 @@
 const fs = require('fs');
 const awsIot = require('aws-iot-device-sdk');
 const log4js = require('log4js');
-const echonet = require('./echonet.js');
 
 const logger = log4js.getLogger();
-logger.level = 'debug';
+logger.level = ('LOGGING_LEVEL' in process.env) ? process.env.LOGGING_LEVEL : 'warn';
+
+const echonet = require('./echonet');
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
 
