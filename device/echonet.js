@@ -5,13 +5,6 @@ const log4js = require('log4js');
 
 const logger = log4js.getLogger();
 
-const address = process.env.AC_ADDRESS;
-if (!address) {
-  logger.fatal('set environment value AC_ADDRESS');
-  process.exit(1);
-}
-logger.info('target: ' + address);
-
 /*
  * Constatants defined by ECHONET Lite.
  * https://echonet.jp/spec_g/#standard-01
@@ -35,11 +28,12 @@ const operationStatusOff = 0x31;
 
 /**
  * Set operation status to the specified value.
+ * @param {string} address An IP address of the target
  * @param {string} status Operation status to be set. 'OFF' or 'ON' (case-insensitive).
  * @param {setOperationStatusCallback} callback 
  */
-exports.setOperationStatus = (status, callback) => {
-  logger.info('set: ' + status);
+exports.setOperationStatus = (address, status, callback) => {
+  logger.info('set: ' + status + ', ' + address);
 
   const socket = dgram.createSocket('udp4');
 
@@ -70,10 +64,11 @@ exports.setOperationStatus = (status, callback) => {
 
 /**
  * Get the current operation status.
+ * @param {string} address An IP address of the target
  * @param {getOperationStatusCallback} callback 
  */
-exports.getOperationStatus = (callback) => {
-  logger.debug('get');
+exports.getOperationStatus = (address, callback) => {
+  logger.debug('get, ' + address);
 
   const socket = dgram.createSocket('udp4');
 

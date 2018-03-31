@@ -4,12 +4,12 @@ const fs = require('fs');
 const awsIot = require('aws-iot-device-sdk');
 const log4js = require('log4js');
 
-const logger = log4js.getLogger();
-logger.level = ('LOGGING_LEVEL' in process.env) ? process.env.LOGGING_LEVEL : 'warn';
-
 const echonet = require('./echonet');
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+
+const logger = log4js.getLogger();
+logger.level = config.loggingLevel ? config.loggingLevel : 'warn';
 
 /**
  * @see {@link https://github.com/aws/aws-iot-device-sdk-js#api}
@@ -30,13 +30,13 @@ thingShadow.on('connect', () => {
 
 thingShadow.on('delta', (thingName, stateObject) => {
   logger.debug('delta: ' + thingName + ', ' + JSON.stringify(stateObject));
-  echonet.setOperationStatus(stateObject.state.airConditioner, () => {
+  echonet.setOperationStatus(config.acAddress, stateObject.state.airConditioner, () => {
     update(thingShadow, thingName);
   });
 });
 
 function update(thingShadow, thingName) {
-  echonet.getOperationStatus((status) => {
+  echonet.getOperationStatus(config.acAddress, (status) => {
     const stateObject = {"state":{"reported":{"airConditioner":status}}};
     logger.debug('update: ' + JSON.stringify(stateObject));
     thingShadow.update(thingName, stateObject);

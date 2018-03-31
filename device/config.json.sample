@@ -1,4 +1,6 @@
 {
+  "loggingLevel": "debug",
+  "acAddress": "192.168.1.1",
   "host": "ABCDEFG1234567.iot.ap-northeast-1.amazonaws.com",
   "port": 8883,
   "clientId": "clientId",
