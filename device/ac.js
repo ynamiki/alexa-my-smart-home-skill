@@ -5,6 +5,12 @@ const log4js = require('log4js');
 
 const logger = log4js.getLogger();
 
+exports.id = 'airConditioner';
+
+exports.handle = (config, value) => {
+  setOperationStatus(config.acAddress, value, () => {});
+}
+
 /*
  * Constatants defined by ECHONET Lite.
  * https://echonet.jp/spec_g/#standard-01
@@ -32,7 +38,7 @@ const operationStatusOff = 0x31;
  * @param {string} status Operation status to be set. 'OFF' or 'ON' (case-insensitive).
  * @param {setOperationStatusCallback} callback 
  */
-exports.setOperationStatus = (address, status, callback) => {
+function setOperationStatus(address, status, callback) {
   logger.info('set: ' + status + ', ' + address);
 
   const socket = dgram.createSocket('udp4');
@@ -67,7 +73,7 @@ exports.setOperationStatus = (address, status, callback) => {
  * @param {string} address An IP address of the target
  * @param {getOperationStatusCallback} callback 
  */
-exports.getOperationStatus = (address, callback) => {
+function getOperationStatus(address, callback) {
   logger.debug('get, ' + address);
 
   const socket = dgram.createSocket('udp4');

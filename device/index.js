@@ -3,10 +3,11 @@
 const fs = require('fs');
 const awsIot = require('aws-iot-device-sdk');
 const log4js = require('log4js');
+const ac = require('./ac');
 
-const echonet = require('./echonet');
+const mqttTopic = 'alexa-my-smart-home-skill';
 
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 const logger = log4js.getLogger();
 logger.level = config.loggingLevel ? config.loggingLevel : 'warn';
@@ -14,7 +15,7 @@ logger.level = config.loggingLevel ? config.loggingLevel : 'warn';
 /**
  * @see {@link https://github.com/aws/aws-iot-device-sdk-js#api}
  */
-const thingShadow = awsIot.thingShadow({
+const device = awsIot.device({
   host: config.host,
   clientId: config.clientId,
   certPath: config.clientCert,
@@ -22,23 +23,21 @@ const thingShadow = awsIot.thingShadow({
   caPath: config.caCert
 });
 
-thingShadow.on('connect', () => {
-  thingShadow.register(config.thingName, {}, () => {
-    update(thingShadow, config.thingName);
-  });
+device.on('connect', () => {
+  logger.info('subscribe: ' + mqttTopic);
+  device.subscribe(mqttTopic);
 });
 
-thingShadow.on('delta', (thingName, stateObject) => {
-  logger.debug('delta: ' + thingName + ', ' + JSON.stringify(stateObject));
-  echonet.setOperationStatus(config.acAddress, stateObject.state.airConditioner, () => {
-    update(thingShadow, thingName);
-  });
-});
+device.on('message', (topic, payload) => {
+  const message = JSON.parse(payload.toString());
 
-function update(thingShadow, thingName) {
-  echonet.getOperationStatus(config.acAddress, (status) => {
-    const stateObject = {"state":{"reported":{"airConditioner":status}}};
-    logger.debug('update: ' + JSON.stringify(stateObject));
-    thingShadow.update(thingName, stateObject);
-  });
-}
+  logger.debug('message in ' + topic + ': ' + JSON.stringify(message));
+  
+  for (let key in message) {
+    if (key === ac.id) {
+      ac.handle(config, message[key]);
+    } else {
+      logger.warn('ignore invalid key: ' + key);
+    }
+  }
+});
