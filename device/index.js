@@ -4,6 +4,7 @@ const fs = require('fs');
 const awsIot = require('aws-iot-device-sdk');
 const log4js = require('log4js');
 const ac = require('./ac');
+const tv = require('./tv');
 
 const mqttTopic = 'alexa-my-smart-home-skill';
 
@@ -36,6 +37,8 @@ device.on('message', (topic, payload) => {
   for (let key in message) {
     if (key === ac.id) {
       ac.handle(config, message[key]);
+    } else if (key === tv.id) {
+      tv.handle(config, message[key]);
     } else {
       logger.warn('ignore invalid key: ' + key);
     }

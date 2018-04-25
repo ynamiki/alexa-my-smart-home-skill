@@ -10,6 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "aws-iot-device-sdk": "^2.2.0",
+    "irmagician": "0.0.3",
     "log4js": "^2.5.3"
   }
 }
