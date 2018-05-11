@@ -1,7 +1,7 @@
-node_modules/
+__pycache__/
+*.pyc
 
 device/certs/*
 !device/certs/root-CA.crt
 
 device/config.json
-lambda/config.json

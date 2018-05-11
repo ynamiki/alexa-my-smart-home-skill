@@ -1,10 +1,15 @@
-distfile = lambda.zip
+zip_file = ../lambda.zip
 
-all: dist
+all: install
 
-dist: clean
-	zip -r $(distfile) *
-	aws --region us-west-2 lambda update-function-code --function-name alexaMySmartHomeSkill --zip-file fileb://$(distfile) --publish
+dist:
+	zip -r $(zip_file) .
+
+install: dist
+	aws --region us-west-2 lambda update-function-code \
+		--function-name alexaMySmartHomeSkill \
+		--zip-file fileb://$(zip_file) \
+		--publish
 
 clean:
-	rm -f $(distfile)
+	rm -rf $(zip_file)
