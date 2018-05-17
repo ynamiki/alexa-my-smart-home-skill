@@ -19,10 +19,6 @@ OPERATION_STATUS_OFF = [0x31]
 
 logger = logging.getLogger(__name__)
 
-def handle(host, value):
-    logger.debug('air conditioner: {}, {}'.format(host, value))
-    set_operation_status(host, value)
-
 def set_operation_status(host, status):
     """Set operation status.
 
@@ -74,3 +70,7 @@ def get_operation_status(host):
         logger.debug('receive message: {}'.format(message))
 
         return 'ON' if message[14] == OPERATION_STATUS_ON else 'OFF'
+
+def handle(host, value):
+    logger.debug('air conditioner: {}, {}'.format(host, value))
+    set_operation_status(host, value)
