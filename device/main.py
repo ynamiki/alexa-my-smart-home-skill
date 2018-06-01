@@ -36,7 +36,7 @@ def callback(client, userdata, message):
     
     for k, v in payload.items():
         if k == air_conditioner.ID:
-            air_conditioner.handle(config['airConditionerAddress'], v)
+            air_conditioner.handle(v)
         elif k == tv.ID:
             tv.handle(v)
         else:
