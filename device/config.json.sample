@@ -1,6 +1,5 @@
 {
-  "loggingLevel": "WARNING",
-  "mqttTopicName": "alexa-my-smart-home-skill",
+  "topic": "alexa-my-smart-home-skill",
   "host": "ABCDEFG1234567.iot.ap-northeast-1.amazonaws.com",
   "port": 8883,
   "clientId": "clientId",
