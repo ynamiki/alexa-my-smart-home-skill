@@ -78,6 +78,24 @@ function setOperationStatus(el, device, status) {
 
 exports.setOperationStatus = setOperationStatus;
 
+function setOperationModeSetting(el, device, mode, temperature) {
+  const prop = [
+    { 'epc': 0x80, 'edt': { 'status': true } },
+    { 'epc': 0xb0, 'edt': { 'mode': mode } },
+    { 'epc': 0xb3, 'edt': { 'temperature': temperature } }
+  ];
+  return new Promise((resolve, reject) => {
+    el.send(device.address, device.eoj[0], 'SetC', prop, (err, res) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+}
+
+exports.setOperationModeSetting = setOperationModeSetting;
+
 function close(el) {
   return new Promise((resolve, reject) => {
     el.close(() => {
