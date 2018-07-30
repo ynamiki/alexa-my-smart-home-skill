@@ -4,7 +4,6 @@ const fs = require('fs');
 // https://github.com/aws/aws-iot-device-sdk-js
 const awsIot = require('aws-iot-device-sdk');
 const ac = require('./ac.js');
-const tv = require('./tv.js');
 
 const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
@@ -29,8 +28,6 @@ device.on('message', (topic, payload) => {
   for (const key in message) {
     if (key === ac.id) {
       ac.handle(message[key]);
-    } else if (key === tv.id) {
-      tv.handle();
     } else {
       console.error('invalid key:', key);
     }

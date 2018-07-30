@@ -28,35 +28,5 @@
         }
       }
     ]
-  },
-  {
-    "endpointId": "tv",
-    "friendlyName": "テレビ",
-    "description": "REGZA 26RE1",
-    "manufacturerName": "Toshiba Corporation",
-    "displayCategories": [
-      "SWITCH"
-    ],
-    "capabilities": [
-      {
-        "type": "AlexaInterface",
-        "interface": "Alexa",
-        "version": "3"
-      },
-      {
-        "type": "AlexaInterface",
-        "interface": "Alexa.PowerController",
-        "version": "3",
-        "properties": {
-          "supported": [
-            {
-              "name": "powerState"
-            }
-          ],
-          "proactivelyReported": false,
-          "retrievable": false
-        }
-      }
-    ]
   }
 ]
