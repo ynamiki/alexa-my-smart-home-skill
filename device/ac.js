@@ -8,7 +8,7 @@ exports.id = 'airConditioner';
 exports.handle = async (status) => {
   const el = new EchonetLite({ type: 'lan' });
   await init(el);
-  const device = await discover(el);
+  const device = await discoverHomeAirConditioner(el);
   await setOperationStatus(el, device, status.toUpperCase() === 'ON' ? true : false);
   await close(el);
 };
@@ -37,7 +37,7 @@ exports.init = init;
  * @param {EchonetLite} An initialized EchonetLite object.
  * @returns {Promise} A device object.
  */
-function discover(el) {
+function discoverHomeAirConditioner(el) {
   return new Promise((resolve, reject) => {
     el.startDiscovery((err, res) => {
       if (err) {
@@ -54,7 +54,7 @@ function discover(el) {
   });
 }
 
-exports.discover = discover;
+exports.discoverHomeAirConditioner = discoverHomeAirConditioner;
 
 /**
  * Set operation status (power on/off).
