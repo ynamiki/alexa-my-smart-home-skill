@@ -120,12 +120,12 @@ function getSensorInfo(address) {
         data += chunk;
       });
       res.on('end', () => {
-        const m = new Map();
+        const o = {};
         for (const e of data.split(',')) {
           const [k, v] = e.split('=');
-          m.set(k, v);
+          o[k] = v;
         }
-        resolve(m);
+        resolve(o);
       });
     });
   });
