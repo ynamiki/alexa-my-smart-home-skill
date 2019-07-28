@@ -134,3 +134,30 @@ function getSensorInfo(address) {
 }
 
 exports.getSensorInfo = getSensorInfo;
+
+/**
+ * Get control information.
+ * @param {String} address
+ * @return {Promise} a Map including the information.
+ */
+function getControlInfo(address) {
+  return new Promise((resolve, reject) => {
+    http.get('http://' + address + '/aircon/get_control_info', (res) => {
+      res.setEncoding('utf-8');
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      res.on('end', () => {
+        const o = {};
+        for (const e of data.split(',')) {
+          const [k, v] = e.split('=');
+          o[k] = v;
+        }
+        resolve(o);
+      });
+    });
+  });
+}
+
+exports.getControlInfo = getControlInfo;
