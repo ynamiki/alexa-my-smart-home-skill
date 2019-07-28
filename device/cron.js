@@ -7,6 +7,8 @@ const MODE_AUTOMATIC = 1;
 const MODE_COOLING = 2;
 const MODE_HEATING = 3;
 
+const THRESHOLD_COOLING = 28;
+const THRESHOLD_HEATING = 20;
 const TEMPERATURE_COOLING = 26;
 const TEMPERATURE_HEATING = 22;
 
@@ -26,10 +28,10 @@ async function turnOn() {
 
   let mode = -1;
   let temperature;
-  if (htemp > TEMPERATURE_COOLING) {
+  if (htemp > THRESHOLD_COOLING) {
     mode = MODE_COOLING;
     temperature = TEMPERATURE_COOLING;
-  } else if (htemp < TEMPERATURE_HEATING) {
+  } else if (htemp < THRESHOLD_HEATING) {
     mode = MODE_HEATING;
     temperature = TEMPERATURE_HEATING;
   }
