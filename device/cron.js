@@ -6,9 +6,11 @@ const ac = require('./ac.js');
 const MODE_AUTOMATIC = 1;
 const MODE_COOLING = 2;
 const MODE_HEATING = 3;
+const MODE_DEHUMIDIFICATION = 4;
 
 const THRESHOLD_COOLING = 28;
 const THRESHOLD_HEATING = 20;
+const THRESHOLD_DEHUMIDIFICATION = 70;
 const TEMPERATURE_COOLING = 26;
 const TEMPERATURE_HEATING = 22;
 
@@ -25,15 +27,18 @@ async function turnOn() {
   const info = await ac.getSensorInfo(device.address);
   log(JSON.stringify(info));
   const htemp = parseFloat(info.htemp);
+  const hhum = parseInt(info.hhum);
 
   let mode = -1;
-  let temperature;
+  let temperature = 0;
   if (htemp > THRESHOLD_COOLING) {
     mode = MODE_COOLING;
     temperature = TEMPERATURE_COOLING;
   } else if (htemp < THRESHOLD_HEATING) {
     mode = MODE_HEATING;
     temperature = TEMPERATURE_HEATING;
+  } else if (hhum > THRESHOLD_DEHUMIDIFICATION) {
+    mode = MODE_DEHUMIDIFICATION;
   }
   if (mode != -1) {
     await ac.setOperationModeSetting(el, device, mode, temperature);
