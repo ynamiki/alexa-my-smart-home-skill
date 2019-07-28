@@ -10,13 +10,18 @@ const MODE_HEATING = 3;
 const TEMPERATURE_COOLING = 26;
 const TEMPERATURE_HEATING = 22;
 
+function log(message) {
+  const date = new Date();
+  console.log(date.toISOString() + ' ' + message);
+}
+
 async function turnOn() {
   const el = new EchonetLite({ type: 'lan' });
   await ac.init(el);
   const device = await ac.discoverHomeAirConditioner(el);
   
   const info = await ac.getSensorInfo(device.address);
-  console.log('info: ' + JSON.stringify(info));
+  log(JSON.stringify(info));
   const htemp = parseFloat(info.htemp);
 
   let mode = -1;
@@ -30,7 +35,7 @@ async function turnOn() {
   }
   if (mode != -1) {
     await ac.setOperationModeSetting(el, device, mode, temperature);
-    console.log('turn on: ' + temperature);
+    log('turn on: ' + temperature);
   }
 
   await ac.close(el);
@@ -42,7 +47,7 @@ async function turnOff() {
   const device = await ac.discoverHomeAirConditioner(el);
   await ac.setOperationStatus(el, device, false);
   await ac.close(el);
-  console.log('turn off');
+  log('turn off');
 }
 
 if (process.argv[2] == 'on') {
