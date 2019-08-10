@@ -1,6 +1,7 @@
 'use strict';
 
 const EchonetLite = require('node-echonet-lite');
+const moment = require('moment');
 const ac = require('./ac.js');
 
 const MODE_AUTOMATIC = 1;
@@ -15,8 +16,7 @@ const TEMPERATURE_COOLING = 26;
 const TEMPERATURE_HEATING = 22;
 
 function log(message) {
-  const date = new Date();
-  console.log(date.toISOString() + ' ' + message);
+  console.log(moment().format() + ' ' + message);
 }
 
 async function turnOn() {

@@ -1,6 +1,7 @@
 'use strict';
 
 const EchonetLite = require('node-echonet-lite');
+const moment = require('moment');
 const ac = require('./ac.js');
 
 async function getInfo() {
@@ -32,8 +33,7 @@ async function log() {
         info.control.shum
     ];
     
-    const date = new Date();
-    console.log(date.toISOString() + ' ' + data.join(','));
+    console.log(moment().format() + ' ' + data.join(','));
 }
 
 log();

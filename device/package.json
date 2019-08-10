@@ -10,6 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "aws-iot-device-sdk": "^2.2.1",
+    "moment": "^2.24.0",
     "node-echonet-lite": "^0.2.3"
   }
 }
