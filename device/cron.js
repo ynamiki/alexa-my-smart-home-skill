@@ -37,7 +37,7 @@ async function turnOn() {
   } else if (htemp < THRESHOLD_HEATING) {
     mode = MODE_HEATING;
     temperature = TEMPERATURE_HEATING;
-  } else if (hhum >= THRESHOLD_DEHUMIDIFICATION) {
+  } else if (hhum > THRESHOLD_DEHUMIDIFICATION) {
     mode = MODE_DEHUMIDIFICATION;
   }
   if (mode != -1) {
